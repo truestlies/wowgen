@@ -4,83 +4,93 @@ WowGen is a command-line tool for generating truly random, cryptographically sec
 
 ## Features
 - **Length**: Specify the length of the password.
-- **Uppercase Letters**: Option to include uppercase letters.
+- **Uppercase letters**: Option to include uppercase letters.
 - **Numbers**: Option to include numbers.
-- **Special Characters**: Option to include special characters.
-- **Exclude Similar Characters**: Option to exclude visually similar characters like `i`, `l`, `1`, `o`, `0`.
-- **Memorable Passwords**: Generate memorable passwords using a combination of random words.
-- **Custom Character Set**: Specify a custom set of characters to include in the password.
-- **Default Settings**: Quickly generate a password with preset settings.
+- **Special characters**: Option to include special characters.
+- **Exclude similar characters**: Option to exclude visually similar characters like `i`, `l`, `1`, `o`, `0`.
+- **Memorable passwords**: Generate memorable passwords using a combination of random words.
+- **Custom character set**: Specify a custom set of characters to include in the password.
+- **Default settings**: Quickly generate a password with preset settings.
 
-## How to Use
 
-### Basic Usage
+## Requirements
+- Python 3.x +
+
+## Installation
+No installation is required. Simply download the `wowgen.py` script and run it using Python.
+
+## Note
+For the memorable password feature to work, ensure a file named `wordlist.txt` is in the same directory as the script containing a list of words, one per line.
+
+## How to use wowgen
+
+### Basic usage
 Generates a 12-character password with lowercase letters only.
 ```sh
 python wowgen.py
 ```
 
-### Custom Length
+### Custom length
 Specify a different length.
 ```sh
 python wowgen.py -l 16
 ```
 
-### Include Uppercase Letters
+### Include uppercase letters
 Include uppercase letters in the password.
 ```sh
 python wowgen.py -u
 ```
 
-### Include Numbers
+### Include numbers
 Include numbers in the password.
 ```sh
 python wowgen.py -n
 ```
 
-### Include Special Characters
+### Include special characters
 Include special characters in the password.
 ```sh
 python wowgen.py -s
 ```
 
-### Exclude Similar Characters
+### Exclude similar characters
 Exclude visually similar characters from the password.
 ```sh
 python wowgen.py -e
 ```
 
-### Custom Character Set
+### Custom character set
 Specify a custom set of characters to include in the password.
 ```sh
 python wowgen.py -c "abcdef1234!@"
 ```
 
-### Memorable Passwords
+### Memorable passwords
 Generate a memorable password using random words.
 ```sh
 python wowgen.py -m
 ```
 
-### Word Count for Memorable Passwords
+### Word count for memorable passwords
 Specify the number of words in a memorable password (default: 4).
 ```sh
 python wowgen.py -m -w 5
 ```
 
-### Separator for Memorable Passwords
+### Separator for memorable passwords
 Specify the separator for words in a memorable password (default: '-').
 ```sh
 python wowgen.py -m -p "_"
 ```
 
-### Default Settings
+### Default settings
 Quickly generate a password with preset settings: length 16, include uppercase, numbers, and special characters.
 ```sh
 python wowgen.py -d
 ```
 
-## Example Commands
+## Example commands
 Generate a 20-character password with all options:
 ```sh
 python wowgen.py -l 20 -u -n -s
@@ -99,14 +109,4 @@ python wowgen.py -l 12 -e
 Generate a password with a custom character set:
 ```sh
 python wowgen.py -c "abcdef1234!@"
-```
-
-## Requirements
-- Python 3.x +
-
-## Installation
-No installation is required. Simply download the `wowgen.py` script and run it using Python.
-
-## Note
-For the memorable password feature to work, ensure there is a file named `wordlist.txt` in the same directory as the script containing a list of words, one per line.
 ```
