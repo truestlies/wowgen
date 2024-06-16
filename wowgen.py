@@ -66,7 +66,7 @@ def main():
     parser.add_argument("-m", "--memorable", action="store_true", help="Generate a memorable password using random words")
     parser.add_argument("-w", "--word-count", type=int, default=4, help="Number of words in a memorable password (default: 4)")
     parser.add_argument("-p", "--separator", type=str, default='-', help="Separator for words in a memorable password (default: '-')")
-    parser.add_argument("-d", "--default", action="store_true", help="Quickly generate a password with preset settings: length 10, with: uppercase, numbers, & special characters")
+    parser.add_argument("-d", "--default", action="store_true", help="Quickly generate a password with preset settings: length 15, with: uppercase, numbers, & special characters")
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
@@ -74,7 +74,7 @@ def main():
         sys.exit(0)
 
     if args.default:
-        password = generate_password(10, True, True, True, False, None)
+        password = generate_password(15, True, True, True, False, None)
     elif args.memorable:
         word_list = load_word_list()
         password = generate_memorable_password(args.word_count, args.separator, word_list)
