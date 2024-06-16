@@ -11,16 +11,32 @@ WowGen is a command-line tool for generating truly random, cryptographically sec
 - **Memorable passwords**: Generate memorable passwords using a combination of random words.
 - **Custom character set**: Specify a custom set of characters to include in the password.
 - **Default settings**: Quickly generate a password with preset settings.
+- **Password strength analysis**: Automatically assesses the strength of generated passwords.
 
+## Password strength analysis
+WowGen now includes a **Password strength analysis** feature that evaluates the strength of generated passwords. This analysis is based on the length and variety of characters in the password.
 
-## Requirements
+### Strength Categories
+- **Strong**: Meets or exceeds the recommended length and character variety criteria.
+- **Moderate**: Partially meets the recommended criteria.
+- **Weak**: Falls short of the recommended criteria.
+
+### Example
+When you generate a password, the script will provide a strength evaluation:
+
+```sh
+Generated password: Abc123!@#
+Password strength: Strong (Length score: 9, Variety score: 8)
+```
+<br>
+
+## Installation and requirements
 - Python 3.x +
+```sh
+pip install -r requirements.xt
+```
 
-## Installation
-No installation is required. Simply download the `wowgen.py` script and run it using Python.
-
-## Note
-For the memorable password feature to work, ensure a file named `wordlist.txt` is in the same directory as the script containing a list of words, one per line.
+<br>
 
 ## How to use wowgen
 
@@ -110,3 +126,5 @@ Generate a password with a custom character set:
 ```sh
 python wowgen.py -c "abcdef1234!@"
 ```
+
+Note: For the memorable password feature to work, ensure a file named `wordlist.txt` is in the same directory as the script containing a list of words, one per line.
