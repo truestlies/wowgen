@@ -1,8 +1,7 @@
-import sys, os, string, secrets, argparse
+import sys, os, string, secrets, argparse, re
 from pathlib import Path
 
 def load_word_list():
-    # Load a list of words from a text file located in the script's directory
     word_list_path = Path(__file__).parent / 'wordlist.txt'
     if not word_list_path.exists():
         print("Wordlist file not found. Memorable passwords will not be available.")
@@ -27,7 +26,7 @@ def generate_password(length, use_uppercase, use_numbers, use_special, exclude_s
 
     if len(characters) == 0:
         raise ValueError("No characters available to generate password")
-
+    
     password = ''.join(secrets.choice(characters) for _ in range(length))
     return password
 
@@ -35,6 +34,26 @@ def generate_memorable_password(num_words, separator, word_list):
     if not word_list:
         raise ValueError("Word list is empty. Cannot generate memorable password.")
     return separator.join(secrets.choice(word_list) for _ in range(num_words))
+
+def analyze_password_strength(password):
+    length_score = len(password)
+    variety_score = len(set(password))
+    
+    length_criteria = 12
+    variety_criteria = 8
+
+    if length_score >= length_criteria and variety_score >= variety_criteria:
+        strength = "Strong"
+    elif length_score >= length_criteria / 2 and variety_score >= variety_criteria / 2:
+        strength = "Moderate"
+    else:
+        strength = "Weak"
+
+    return {
+        "length_score": length_score,
+        "variety_score": variety_score,
+        "strength": strength
+    }
 
 def main():
     parser = argparse.ArgumentParser(description="WowGen: A cryptographically secure password generator with cool features")
@@ -47,18 +66,17 @@ def main():
     parser.add_argument("-m", "--memorable", action="store_true", help="Generate a memorable password using random words")
     parser.add_argument("-w", "--word-count", type=int, default=4, help="Number of words in a memorable password (default: 4)")
     parser.add_argument("-p", "--separator", type=str, default='-', help="Separator for words in a memorable password (default: '-')")
-    parser.add_argument("-d", "--default", action="store_true", help="Quickly generate a password with preset settings: length 16, include uppercase, numbers, and special characters")
+    parser.add_argument("-d", "--default", action="store_true", help="Quickly generate a password with preset settings: length 10, with: uppercase, numbers, & special characters")
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
 
-    word_list = load_word_list()
-
     if args.default:
-        password = generate_password(16, True, True, True, False, None)
+        password = generate_password(10, True, True, True, False, None)
     elif args.memorable:
+        word_list = load_word_list()
         password = generate_memorable_password(args.word_count, args.separator, word_list)
     else:
         try:
@@ -67,7 +85,9 @@ def main():
             print(f"Error: {e}")
             sys.exit(1)
 
+    strength_info = analyze_password_strength(password)
     print(f"Generated password: {password}")
+    print(f"Password strength: {strength_info['strength']} (Length score: {strength_info['length_score']}, Variety score: {strength_info['variety_score']})")
 
 if __name__ == "__main__":
     main()
