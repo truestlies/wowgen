@@ -56,4 +56,4 @@ python wowgen.py -l 20 -u -n -s
 - Python 3.x +
 
 ## Installation
-No installation is required. Simply download the `main.py` script and run it using Python.
+No installation is required. Simply download the `wowgen.py` script and run it using Python.
