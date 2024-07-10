@@ -55,24 +55,23 @@ def analyze_password_strength(password):
         "strength": strength
     }
 
+def get_non_empty_input(prompt):
+    while True:
+        user_input = input(prompt).strip()
+        if user_input:
+            return user_input
+        print("Input cannot be empty. Please try again.")
+
 def interactive_mode():
-    length = int(input("Enter the password length: "))
-    use_uppercase = input("Include uppercase letters? (y/n): ").lower() == 'y'
-    use_numbers = input("Include numbers? (y/n): ").lower() == 'y'
-    use_special = input("Include special characters? (y/n): ").lower() == 'y'
-    exclude_similar = input("Exclude similar characters? (y/n): ").lower() == 'y'
-    custom_chars = input("Enter custom characters (leave blank to use default): ") or None
-    
-    word_list_path = Path(__file__).parent / 'wordlist.txt'
-    if not word_list_path.exists():
-        print("Wordlist file not found. Memorable passwords are unavailable.")
-        memorable = False
-        word_count = 0
-        separator = ''
-    else:
-        memorable = input("Generate a memorable password? (y/n): ").lower() == 'y'
-        word_count = int(input("Number of words for memorable password: ")) if memorable else 0
-        separator = input("Separator for words: ") if memorable else ''
+    length = int(get_non_empty_input("Enter password length: "))
+    use_uppercase = get_non_empty_input("Use uppercase letters? (yes/no): ").lower() == 'yes'
+    use_numbers = get_non_empty_input("Use numbers? (yes/no): ").lower() == 'yes'
+    use_special = get_non_empty_input("Use special characters? (yes/no): ").lower() == 'yes'
+    exclude_similar = get_non_empty_input("Exclude similar characters (i, l, 1, o, 0)? (yes/no): ").lower() == 'yes'
+    custom_chars = get_non_empty_input("Enter custom characters to use (leave blank for default): ")
+    memorable = get_non_empty_input("Generate a memorable password instead? (yes/no): ").lower() == 'yes'
+    word_count = int(get_non_empty_input("Number of words in memorable password: ")) if memorable else None
+    separator = get_non_empty_input("Separator for words in memorable password: ") if memorable else None
 
     return {
         "length": length,
@@ -87,13 +86,13 @@ def interactive_mode():
     }
 
 def main():
-    parser = argparse.ArgumentParser(description="WowGen: A cryptographically secure password generator with cool features")
-    parser.add_argument("-l", "--length", type=int, default=12, help="Length of the password (default: 12)")
+    parser = argparse.ArgumentParser(description="Password generator script")
+    parser.add_argument("-l", "--length", type=int, help="Length of the password")
     parser.add_argument("-u", "--uppercase", action="store_true", help="Include uppercase letters")
     parser.add_argument("-n", "--numbers", action="store_true", help="Include numbers")
     parser.add_argument("-s", "--special", action="store_true", help="Include special characters")
-    parser.add_argument("-e", "--exclude-similar", action="store_true", help="Exclude visually similar characters (i, l, 1, o, 0)")
-    parser.add_argument("-c", "--custom-chars", type=str, help="Specify a custom set of characters to include in the password")
+    parser.add_argument("-x", "--exclude-similar", action="store_true", help="Exclude similar characters (i, l, 1, o, 0)")
+    parser.add_argument("-c", "--custom-chars", type=str, help="Custom characters to use")
     parser.add_argument("-m", "--memorable", action="store_true", help="Generate a memorable password using random words")
     parser.add_argument("-w", "--word-count", type=int, default=4, help="Number of words in a memorable password (default: 4)")
     parser.add_argument("-p", "--separator", type=str, default='-', help="Separator for words in a memorable password (default: '-')")
