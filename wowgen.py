@@ -62,9 +62,18 @@ def interactive_mode():
     use_special = input("Include special characters? (y/n): ").lower() == 'y'
     exclude_similar = input("Exclude similar characters? (y/n): ").lower() == 'y'
     custom_chars = input("Enter custom characters (leave blank to use default): ") or None
-    memorable = input("Generate a memorable password? (y/n): ").lower() == 'y'
-    word_count = int(input("Number of words for memorable password: ")) if memorable else 0
-    separator = input("Separator for words: ") if memorable else ''
+    
+    word_list_path = Path(__file__).parent / 'wordlist.txt'
+    if not word_list_path.exists():
+        print("Wordlist file not found. Memorable passwords are unavailable.")
+        memorable = False
+        word_count = 0
+        separator = ''
+    else:
+        memorable = input("Generate a memorable password? (y/n): ").lower() == 'y'
+        word_count = int(input("Number of words for memorable password: ")) if memorable else 0
+        separator = input("Separator for words: ") if memorable else ''
+
     return {
         "length": length,
         "use_uppercase": use_uppercase,
@@ -121,7 +130,7 @@ def main():
             sys.exit(1)
 
     strength_info = analyze_password_strength(password)
-    print(f"Generated password: {password}")
+    print(f"\nGenerated password: {password}")
     print(f"Password strength: {strength_info['strength']} (Length score: {strength_info['length_score']}, Variety score: {strength_info['variety_score']})")
 
 if __name__ == "__main__":
