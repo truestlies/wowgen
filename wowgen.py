@@ -55,6 +55,28 @@ def analyze_password_strength(password):
         "strength": strength
     }
 
+def interactive_mode():
+    length = int(input("Enter the password length: "))
+    use_uppercase = input("Include uppercase letters? (y/n): ").lower() == 'y'
+    use_numbers = input("Include numbers? (y/n): ").lower() == 'y'
+    use_special = input("Include special characters? (y/n): ").lower() == 'y'
+    exclude_similar = input("Exclude similar characters? (y/n): ").lower() == 'y'
+    custom_chars = input("Enter custom characters (leave blank to use default): ") or None
+    memorable = input("Generate a memorable password? (y/n): ").lower() == 'y'
+    word_count = int(input("Number of words for memorable password: ")) if memorable else 0
+    separator = input("Separator for words: ") if memorable else ''
+    return {
+        "length": length,
+        "use_uppercase": use_uppercase,
+        "use_numbers": use_numbers,
+        "use_special": use_special,
+        "exclude_similar": exclude_similar,
+        "custom_chars": custom_chars,
+        "memorable": memorable,
+        "word_count": word_count,
+        "separator": separator
+    }
+
 def main():
     parser = argparse.ArgumentParser(description="WowGen: A cryptographically secure password generator with cool features")
     parser.add_argument("-l", "--length", type=int, default=12, help="Length of the password (default: 12)")
@@ -66,15 +88,28 @@ def main():
     parser.add_argument("-m", "--memorable", action="store_true", help="Generate a memorable password using random words")
     parser.add_argument("-w", "--word-count", type=int, default=4, help="Number of words in a memorable password (default: 4)")
     parser.add_argument("-p", "--separator", type=str, default='-', help="Separator for words in a memorable password (default: '-')")
-    parser.add_argument("-d", "--default", action="store_true", help="Quickly generate a password with preset settings: length 10, with: uppercase, numbers, & special characters")
+    parser.add_argument("-d", "--default", action="store_true", help="Quickly generate a password with preset settings: length 15, with: uppercase, numbers, & special characters")
+    parser.add_argument("-i", "--interactive", action="store_true", help="Run in interactive mode")
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
 
+    if args.interactive:
+        user_input = interactive_mode()
+        args.length = user_input["length"]
+        args.uppercase = user_input["use_uppercase"]
+        args.numbers = user_input["use_numbers"]
+        args.special = user_input["use_special"]
+        args.exclude_similar = user_input["exclude_similar"]
+        args.custom_chars = user_input["custom_chars"]
+        args.memorable = user_input["memorable"]
+        args.word_count = user_input["word_count"]
+        args.separator = user_input["separator"]
+
     if args.default:
-        password = generate_password(10, True, True, True, False, None)
+        password = generate_password(15, True, True, True, False, None)
     elif args.memorable:
         word_list = load_word_list()
         password = generate_memorable_password(args.word_count, args.separator, word_list)
