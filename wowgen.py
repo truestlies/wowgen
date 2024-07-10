@@ -58,20 +58,40 @@ def analyze_password_strength(password):
 def get_non_empty_input(prompt):
     while True:
         user_input = input(prompt).strip()
-        if user_input:
+        if len(user_input) >= 1:
             return user_input
-        print("Input cannot be empty. Please try again.")
 
 def interactive_mode():
     length = int(get_non_empty_input("Enter password length: "))
-    use_uppercase = get_non_empty_input("Use uppercase letters? (yes/no): ").lower() == 'yes'
-    use_numbers = get_non_empty_input("Use numbers? (yes/no): ").lower() == 'yes'
-    use_special = get_non_empty_input("Use special characters? (yes/no): ").lower() == 'yes'
-    exclude_similar = get_non_empty_input("Exclude similar characters (i, l, 1, o, 0)? (yes/no): ").lower() == 'yes'
-    custom_chars = get_non_empty_input("Enter custom characters to use (leave blank for default): ")
-    memorable = get_non_empty_input("Generate a memorable password instead? (yes/no): ").lower() == 'yes'
-    word_count = int(get_non_empty_input("Number of words in memorable password: ")) if memorable else None
-    separator = get_non_empty_input("Separator for words in memorable password: ") if memorable else None
+
+    if 'y' in get_non_empty_input("Use uppercase letters? (yes/no): ").lower():
+        use_uppercase = True
+    else: use_uppercase = False
+    
+    if 'y' in get_non_empty_input("Use numbers? (yes/no): ").lower():
+        use_numbers = True
+    else: use_numbers = False
+    
+    if 'y' in get_non_empty_input("Use special characters? (yes/no): ").lower():
+        use_special = True
+    else: use_special = False
+
+    if 'y' in get_non_empty_input("Exclude similar characters (i, l, 1, o, 0)? (yes/no): ").lower():
+        exclude_similar = True
+    else: exclude_similar = False
+
+    custom_chars = input("Enter custom characters to use (leave blank for default): ")
+    
+    word_list_path = Path(__file__).parent / 'wordlist.txt'
+    if not word_list_path.exists():
+        print("Wordlist file not found. Memorable passwords are unavailable.")
+        memorable = False
+        word_count = 0
+        separator = ''
+    else:
+        if 'y' in get_non_empty_input("Generate a memorable password? (yes/no): ").lower():
+            word_count = int(get_non_empty_input("Number of words for memorable password: "))
+            separator = get_non_empty_input("Separator for words: ")
 
     return {
         "length": length,
